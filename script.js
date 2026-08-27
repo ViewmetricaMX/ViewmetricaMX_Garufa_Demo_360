@@ -1,7 +1,16 @@
 /* ============================================================
-   VIEWMETRICAMX · GARUFA PARRILLA ARGENTINA
-   Experiencia 360°
-   Sistema: Áreas → múltiples panoramas
+   VIEWMETRICA
+   GARUFA PARRILLA ARGENTINA
+   EXPERIENCIA 360°
+
+   Arquitectura:
+
+   ÁREA
+      └── 1 o N PANORAMAS
+
+   Garufa:
+      5 áreas
+      8 panoramas
 ============================================================ */
 
 (() => {
@@ -9,80 +18,119 @@
   "use strict";
 
 
-  /* ============================================================
-     PANORAMAS REALES DE GARUFA
-  ============================================================ */
+  /* ==========================================================
+     CONFIGURACIÓN DE GARUFA
+  ========================================================== */
 
   const AREAS = {
 
     entrada: {
+
       label: "ENTRADA",
+
       panoramas: [
+
         "assets/garufa-parrilla-argentina-torreon-entrada_360.jpg"
+
       ]
+
     },
 
-    cava: {
-      label: "CAVA",
-      panoramas: [
-        "assets/garufa-parrilla-argentina-torreon-interior_cava_360.jpg",
-        "assets/garufa-parrilla-argentina-torreon-interior_cava01_360.jpg"
-      ]
-    },
-
-    salon: {
-      label: "SALÓN PRINCIPAL",
-      panoramas: [
-        "assets/garufa-parrilla-argentina-torreon-interior_principal_360.jpg",
-        "assets/garufa-parrilla-argentina-torreon-interior_principal_01_360.jpg"
-      ]
-    },
 
     interior: {
+
       label: "INTERIOR",
+
       panoramas: [
+
         "assets/garufa-parrilla-argentina-torreon-interior01_360.jpg",
+
         "assets/garufa-parrilla-argentina-torreon-interior02_360.jpg"
+
       ]
+
     },
 
-    toilets: {
-      label: "TOILETS",
+
+    cava: {
+
+      label: "INTERIOR CAVA PRINCIPAL",
+
       panoramas: [
-        "assets/garufa-parrilla-argentina-torreon-toilets_360.jpg"
+
+        "assets/garufa-parrilla-argentina-torreon-interior_cava_360.jpg",
+
+        "assets/garufa-parrilla-argentina-torreon-interior_cava01_360.jpg"
+
       ]
+
+    },
+
+
+    principal: {
+
+      label: "INTERIOR PRINCIPAL",
+
+      panoramas: [
+
+        "assets/garufa-parrilla-argentina-torreon-interior_principal_360.jpg",
+
+        "assets/garufa-parrilla-argentina-torreon-interior_principal_01_360.jpg"
+
+      ]
+
+    },
+
+
+    toilets: {
+
+      label: "TOILETS",
+
+      panoramas: [
+
+        "assets/garufa-parrilla-argentina-torreon-toilets_360.jpg"
+
+      ]
+
     }
 
   };
 
 
-  /* ============================================================
+  /* ==========================================================
      ESTADO
-  ============================================================ */
+  ========================================================== */
 
   let currentArea = "entrada";
+
   let currentPanorama = 0;
 
   let scene;
+
   let camera;
+
   let renderer;
+
   let sphere;
-  let texture;
+
+  let texture = null;
+
+  let targetRotation = 0;
 
   let currentRotation = 0;
-  let targetRotation = 0;
 
   let velocity = 0;
 
   let isDragging = false;
-  let lastX = 0;
 
-  let fov = 75;
+  let lastPointerX = 0;
+
+  let fieldOfView = 75;
 
 
-  /* ============================================================
-     DOM
-  ============================================================ */
+  /* ==========================================================
+     ELEMENTOS
+  ========================================================== */
 
   const stage =
     document.getElementById("viewer-stage");
@@ -93,36 +141,34 @@
   const loading =
     document.getElementById("viewer-loading");
 
-  const hint =
-    document.getElementById("viewer-hint");
-
   const areaLabel =
     document.getElementById("viewer-area");
 
-  const buttons =
-    document.querySelectorAll(".area-btn");
+  const counter =
+    document.getElementById("panorama-counter");
 
-  const zoomIn =
-    document.getElementById("zoom-in");
+  const hint =
+    document.getElementById("viewer-hint");
 
-  const zoomOut =
-    document.getElementById("zoom-out");
+  const panoramaNavigation =
+    document.getElementById(
+      "panorama-navigation"
+    );
 
-  const recenter =
-    document.getElementById("recenter");
+  const areaButtons =
+    document.querySelectorAll(
+      ".area-btn"
+    );
 
-  const fullscreen =
-    document.getElementById("fullscreen-btn");
 
-
-  /* ============================================================
-     VERIFICACIÓN
-  ============================================================ */
+  /* ==========================================================
+     VALIDACIÓN
+  ========================================================== */
 
   if (!stage || !canvas) {
 
     console.error(
-      "Viewmetrica: no se encontró el contenedor del visor."
+      "Viewmetrica: no se encontró el visor."
     );
 
     return;
@@ -133,7 +179,7 @@
   if (typeof THREE === "undefined") {
 
     showError(
-      "No fue posible cargar el motor 360°."
+      "No se pudo cargar el motor del visor."
     );
 
     return;
@@ -141,9 +187,9 @@
   }
 
 
-  /* ============================================================
-     INICIALIZAR THREE.JS
-  ============================================================ */
+  /* ==========================================================
+     INICIALIZACIÓN
+  ========================================================== */
 
   function init() {
 
@@ -153,10 +199,16 @@
 
     camera =
       new THREE.PerspectiveCamera(
-        fov,
-        stage.clientWidth / stage.clientHeight,
+
+        fieldOfView,
+
+        stage.clientWidth /
+        stage.clientHeight,
+
         0.1,
+
         1100
+
       );
 
 
@@ -180,24 +232,29 @@
 
 
     renderer.setPixelRatio(
+
       Math.min(
         window.devicePixelRatio || 1,
         2
       )
+
     );
 
 
     renderer.setSize(
+
       stage.clientWidth,
+
       stage.clientHeight,
+
       false
+
     );
 
 
     /*
-      IMPORTANTE:
-      Three.js r128 utiliza outputEncoding,
-      no outputColorSpace.
+      Three.js r128
+      utiliza sRGBEncoding.
     */
 
     renderer.outputEncoding =
@@ -205,20 +262,24 @@
 
 
     /* ========================================================
-       ESFERA 360°
+       ESFERA
     ======================================================== */
 
     const geometry =
       new THREE.SphereGeometry(
+
         100,
+
         64,
+
         40
+
       );
 
 
     /*
       Invertimos la esfera para
-      visualizarla desde dentro.
+      visualizar la textura desde dentro.
     */
 
     geometry.scale(
@@ -230,14 +291,19 @@
 
     const material =
       new THREE.MeshBasicMaterial({
+
         color: 0xffffff
+
       });
 
 
     sphere =
       new THREE.Mesh(
+
         geometry,
+
         material
+
       );
 
 
@@ -254,11 +320,11 @@
 
 
     /* ========================================================
-       PRIMER PANORAMA
+       CARGA INICIAL
     ======================================================== */
 
     loadPanorama(
-      currentArea,
+      "entrada",
       0
     );
 
@@ -268,9 +334,9 @@
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      CARGAR PANORAMA
-  ============================================================ */
+  ========================================================== */
 
   function loadPanorama(
     areaId,
@@ -284,7 +350,7 @@
     if (!area) {
 
       showError(
-        "Área no encontrada."
+        "El área solicitada no existe."
       );
 
       return;
@@ -299,7 +365,7 @@
     if (!imagePath) {
 
       showError(
-        "Panorama no encontrado."
+        "El panorama solicitado no existe."
       );
 
       return;
@@ -309,6 +375,7 @@
 
     currentArea =
       areaId;
+
 
     currentPanorama =
       panoramaIndex;
@@ -321,9 +388,9 @@
     showLoading();
 
 
-    /*
-      Liberar textura anterior.
-    */
+    /* ========================================================
+       LIBERAR TEXTURA ANTERIOR
+    ======================================================== */
 
     if (texture) {
 
@@ -338,14 +405,14 @@
       new THREE.TextureLoader();
 
 
-    /*
-      La carga se hace directamente
-      desde assets/.
-    */
-
     loader.load(
 
       imagePath,
+
+
+      /* ======================================================
+         SUCCESS
+      ==================================================== */
 
       (loadedTexture) => {
 
@@ -354,7 +421,7 @@
 
 
         /*
-          Three.js r128
+          Three.js r128.
         */
 
         texture.encoding =
@@ -382,15 +449,17 @@
 
 
         /*
-          Reiniciar posición
-          cuando cambia de panorama.
+          Reiniciamos la posición
+          al cambiar de panorama.
         */
 
         targetRotation =
           0;
 
+
         currentRotation =
           0;
+
 
         velocity =
           0;
@@ -399,82 +468,67 @@
         hideLoading();
 
 
-        updatePanoramaCounter();
+        updateAreaUI();
 
 
-        /*
-          Ocultar ayuda después
-          de unos segundos.
-        */
-
-        if (hint) {
-
-          hint.classList.remove(
-            "hidden"
-          );
-
-
-          setTimeout(() => {
-
-            hint.classList.add(
-              "hidden"
-            );
-
-          }, 3500);
-
-        }
+        showHint();
 
       },
 
-      /*
-        Progreso
-      */
+
+      /* ======================================================
+         PROGRESO
+      ==================================================== */
 
       (progress) => {
 
+        const text =
+          loading.querySelector(
+            ".loading-text"
+          );
+
+
         if (
-          progress.total > 0
+          text &&
+          progress.total
         ) {
 
           const percent =
             Math.round(
+
               (
                 progress.loaded /
                 progress.total
+
               ) * 100
+
             );
 
 
-          const text =
-            loading.querySelector("span");
-
-
-          if (text) {
-
-            text.textContent =
-              `Cargando panorama… ${percent}%`;
-
-          }
+          text.textContent =
+            `Preparando panorama… ${percent}%`;
 
         }
 
       },
 
-      /*
-        ERROR
-      */
 
-      (error) => {
+      /* ======================================================
+         ERROR
+      ==================================================== */
+
+      () => {
 
         console.error(
-          "Viewmetrica: error cargando panorama:",
-          imagePath,
-          error
+          "Viewmetrica: no se pudo cargar:",
+          imagePath
         );
 
 
         showError(
-          "No se pudo cargar este panorama."
+
+          `No se pudo cargar el panorama de ${area.label}.`
+
         );
 
       }
@@ -484,109 +538,87 @@
   }
 
 
-  /* ============================================================
-     INDICADOR 01 / 02
-  ============================================================ */
+  /* ==========================================================
+     ACTUALIZAR INTERFAZ
+  ========================================================== */
 
-  function updatePanoramaCounter() {
+  function updateAreaUI() {
 
     const area =
       AREAS[currentArea];
 
 
-    if (!areaLabel || !area) {
+    if (!area) {
       return;
     }
 
 
-    let counter =
-      document.getElementById(
-        "panorama-counter"
-      );
+    areaLabel.textContent =
+      area.label;
 
 
-    if (!counter) {
-
-      counter =
-        document.createElement(
-          "span"
-        );
-
-      counter.id =
-        "panorama-counter";
-
-      counter.className =
-        "panorama-counter";
-
-
-      areaLabel.parentNode.appendChild(
-        counter
-      );
-
-    }
-
+    /* ========================================================
+       CONTADOR
+    ======================================================== */
 
     if (
       area.panoramas.length > 1
     ) {
 
       counter.textContent =
-        `${String(currentPanorama + 1).padStart(2, "0")} / ${String(area.panoramas.length).padStart(2, "0")}`;
 
-      counter.style.display =
-        "inline-block";
+        `${String(
+          currentPanorama + 1
+        ).padStart(2, "0")} / ${String(
+          area.panoramas.length
+        ).padStart(2, "0")}`;
+
+      counter.classList.add(
+        "visible"
+      );
 
     } else {
 
-      counter.style.display =
-        "none";
+      counter.textContent =
+        "";
+
+      counter.classList.remove(
+        "visible"
+      );
 
     }
 
 
-    updateAreaNavigation();
+    /* ========================================================
+       BOTONES DE ÁREA
+    ======================================================== */
+
+    areaButtons.forEach(
+      button => {
+
+        button.classList.toggle(
+
+          "active",
+
+          button.dataset.area ===
+          currentArea
+
+        );
+
+      }
+    );
+
+
+    updatePanoramaNavigation();
 
   }
 
 
-  /* ============================================================
-     NAVEGACIÓN INTERNA DEL ÁREA
-  ============================================================ */
+  /* ==========================================================
+     NAVEGACIÓN ENTRE PANORAMAS
+  ========================================================== */
 
-  function updateAreaNavigation() {
-
-    let navigation =
-      document.getElementById(
-        "panorama-navigation"
-      );
-
-
-    /*
-      Crear controles únicamente
-      cuando un área tiene más
-      de un panorama.
-    */
-
-    if (!navigation) {
-
-      navigation =
-        document.createElement(
-          "div"
-        );
-
-      navigation.id =
-        "panorama-navigation";
-
-      navigation.className =
-        "panorama-navigation";
-
-
-      stage.appendChild(
-        navigation
-      );
-
-    }
-
+  function updatePanoramaNavigation() {
 
     const area =
       AREAS[currentArea];
@@ -597,10 +629,10 @@
       area.panoramas.length <= 1
     ) {
 
-      navigation.innerHTML =
+      panoramaNavigation.innerHTML =
         "";
 
-      navigation.classList.remove(
+      panoramaNavigation.classList.remove(
         "visible"
       );
 
@@ -609,25 +641,31 @@
     }
 
 
-    navigation.innerHTML = `
+    panoramaNavigation.innerHTML = `
 
       <button
         type="button"
-        class="pano-arrow pano-prev"
+        class="pano-arrow"
+        data-direction="previous"
         aria-label="Panorama anterior"
       >
         ‹
       </button>
 
-      <span>
-        ${String(currentPanorama + 1).padStart(2, "0")}
+      <span class="pano-count">
+        ${String(
+          currentPanorama + 1
+        ).padStart(2, "0")}
         /
-        ${String(area.panoramas.length).padStart(2, "0")}
+        ${String(
+          area.panoramas.length
+        ).padStart(2, "0")}
       </span>
 
       <button
         type="button"
-        class="pano-arrow pano-next"
+        class="pano-arrow"
+        data-direction="next"
         aria-label="Siguiente panorama"
       >
         ›
@@ -636,21 +674,25 @@
     `;
 
 
-    navigation.classList.add(
+    panoramaNavigation.classList.add(
       "visible"
     );
 
 
-    navigation
-      .querySelector(".pano-prev")
+    panoramaNavigation
+      .querySelector(
+        '[data-direction="previous"]'
+      )
       .addEventListener(
         "click",
         previousPanorama
       );
 
 
-    navigation
-      .querySelector(".pano-next")
+    panoramaNavigation
+      .querySelector(
+        '[data-direction="next"]'
+      )
       .addEventListener(
         "click",
         nextPanorama
@@ -659,9 +701,9 @@
   }
 
 
-  /* ============================================================
-     SIGUIENTE PANORAMA
-  ============================================================ */
+  /* ==========================================================
+     SIGUIENTE
+  ========================================================== */
 
   function nextPanorama() {
 
@@ -680,8 +722,11 @@
     ) {
 
       loadPanorama(
+
         currentArea,
+
         currentPanorama + 1
+
       );
 
     }
@@ -689,9 +734,9 @@
   }
 
 
-  /* ============================================================
-     PANORAMA ANTERIOR
-  ============================================================ */
+  /* ==========================================================
+     ANTERIOR
+  ========================================================== */
 
   function previousPanorama() {
 
@@ -700,8 +745,11 @@
     ) {
 
       loadPanorama(
+
         currentArea,
+
         currentPanorama - 1
+
       );
 
     }
@@ -709,9 +757,9 @@
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      LOADING
-  ============================================================ */
+  ========================================================== */
 
   function showLoading() {
 
@@ -720,16 +768,15 @@
     );
 
 
-    const text =
-      loading.querySelector("span");
+    loading.innerHTML = `
 
+      <div class="loading-ring"></div>
 
-    if (text) {
+      <span class="loading-text">
+        Preparando panorama…
+      </span>
 
-      text.textContent =
-        "Preparando panorama…";
-
-    }
+    `;
 
   }
 
@@ -757,7 +804,7 @@
       <div class="loading-error">
 
         <strong>
-          Algo salió mal
+          No pudimos cargar esta vista
         </strong>
 
         <span>
@@ -782,37 +829,62 @@
       );
 
 
-    if (retry) {
+    retry?.addEventListener(
+      "click",
+      () => {
 
-      retry.addEventListener(
-        "click",
-        () => {
+        loadPanorama(
+          currentArea,
+          currentPanorama
+        );
 
-          loadPanorama(
-            currentArea,
-            currentPanorama
-          );
+      }
+    );
 
-        }
-      );
+  }
 
+
+  /* ==========================================================
+     AYUDA
+  ========================================================== */
+
+  function showHint() {
+
+    if (!hint) {
+      return;
     }
 
+
+    hint.classList.remove(
+      "hidden"
+    );
+
+
+    clearTimeout(
+      showHint.timeout
+    );
+
+
+    showHint.timeout =
+      setTimeout(
+        () => {
+
+          hint.classList.add(
+            "hidden"
+          );
+
+        },
+
+        4000
+
+      );
+
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      DRAG
-  ============================================================ */
-
-  function getPointerX(
-    event
-  ) {
-
-    return event.clientX;
-
-  }
-
+  ========================================================== */
 
   function pointerDown(
     event
@@ -821,25 +893,32 @@
     isDragging =
       true;
 
-    lastX =
-      getPointerX(event);
+
+    lastPointerX =
+      event.clientX;
+
 
     velocity =
       0;
 
 
-    stage.setPointerCapture?.(
-      event.pointerId
+    stage.classList.add(
+      "dragging"
     );
 
 
-    if (hint) {
+    hint?.classList.add(
+      "hidden"
+    );
 
-      hint.classList.add(
-        "hidden"
+
+    try {
+
+      stage.setPointerCapture(
+        event.pointerId
       );
 
-    }
+    } catch (error) {}
 
   }
 
@@ -853,16 +932,17 @@
     }
 
 
-    const x =
-      getPointerX(event);
+    const currentX =
+      event.clientX;
 
 
     const delta =
-      x - lastX;
+      currentX -
+      lastPointerX;
 
 
-    lastX =
-      x;
+    lastPointerX =
+      currentX;
 
 
     targetRotation +=
@@ -880,33 +960,41 @@
     isDragging =
       false;
 
+
+    stage.classList.remove(
+      "dragging"
+    );
+
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ZOOM
-  ============================================================ */
+  ========================================================== */
 
   function changeZoom(
     amount
   ) {
 
-    fov +=
+    fieldOfView +=
       amount;
 
 
-    fov =
+    fieldOfView =
       Math.max(
+
         45,
+
         Math.min(
           90,
-          fov
+          fieldOfView
         )
+
       );
 
 
     camera.fov =
-      fov;
+      fieldOfView;
 
 
     camera.updateProjectionMatrix();
@@ -914,11 +1002,31 @@
   }
 
 
-  /* ============================================================
+  /* ==========================================================
+     CENTRAR
+  ========================================================== */
+
+  function centerView() {
+
+    targetRotation =
+      0;
+
+
+    velocity =
+      0;
+
+  }
+
+
+  /* ==========================================================
      EVENTOS
-  ============================================================ */
+  ========================================================== */
 
   function setupEvents() {
+
+    /* --------------------------------------------------------
+       POINTER
+    -------------------------------------------------------- */
 
     stage.addEventListener(
       "pointerdown",
@@ -950,61 +1058,63 @@
     );
 
 
-    zoomIn?.addEventListener(
-      "click",
-      () => {
+    /* --------------------------------------------------------
+       ZOOM
+    -------------------------------------------------------- */
 
-        changeZoom(-5);
+    document
+      .getElementById("zoom-in")
+      ?.addEventListener(
+        "click",
+        () => {
 
-      }
-    );
-
-
-    zoomOut?.addEventListener(
-      "click",
-      () => {
-
-        changeZoom(5);
-
-      }
-    );
-
-
-    recenter?.addEventListener(
-      "click",
-      () => {
-
-        targetRotation =
-          0;
-
-        velocity =
-          0;
-
-      }
-    );
-
-
-    fullscreen?.addEventListener(
-      "click",
-      () => {
-
-        if (
-          !document.fullscreenElement
-        ) {
-
-          stage.requestFullscreen?.();
-
-        } else {
-
-          document.exitFullscreen?.();
+          changeZoom(-5);
 
         }
-
-      }
-    );
+      );
 
 
-    buttons.forEach(
+    document
+      .getElementById("zoom-out")
+      ?.addEventListener(
+        "click",
+        () => {
+
+          changeZoom(5);
+
+        }
+      );
+
+
+    /* --------------------------------------------------------
+       CENTRAR
+    -------------------------------------------------------- */
+
+    document
+      .getElementById("recenter")
+      ?.addEventListener(
+        "click",
+        centerView
+      );
+
+
+    /* --------------------------------------------------------
+       FULLSCREEN
+    -------------------------------------------------------- */
+
+    document
+      .getElementById("fullscreen-btn")
+      ?.addEventListener(
+        "click",
+        toggleFullscreen
+      );
+
+
+    /* --------------------------------------------------------
+       ÁREAS
+    -------------------------------------------------------- */
+
+    areaButtons.forEach(
       button => {
 
         button.addEventListener(
@@ -1015,25 +1125,13 @@
               button.dataset.area;
 
 
-            if (!AREAS[areaId]) {
+            if (
+              !AREAS[areaId]
+            ) {
+
               return;
+
             }
-
-
-            buttons.forEach(
-              item => {
-
-                item.classList.remove(
-                  "active"
-                );
-
-              }
-            );
-
-
-            button.classList.add(
-              "active"
-            );
 
 
             loadPanorama(
@@ -1048,6 +1146,10 @@
     );
 
 
+    /* --------------------------------------------------------
+       RESIZE
+    -------------------------------------------------------- */
+
     window.addEventListener(
       "resize",
       resize
@@ -1056,9 +1158,30 @@
   }
 
 
-  /* ============================================================
+  /* ==========================================================
+     FULLSCREEN
+  ========================================================== */
+
+  function toggleFullscreen() {
+
+    if (
+      !document.fullscreenElement
+    ) {
+
+      stage.requestFullscreen?.();
+
+    } else {
+
+      document.exitFullscreen?.();
+
+    }
+
+  }
+
+
+  /* ==========================================================
      RESIZE
-  ============================================================ */
+  ========================================================== */
 
   function resize() {
 
@@ -1088,17 +1211,21 @@
 
 
     renderer.setSize(
+
       width,
+
       height,
+
       false
+
     );
 
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ANIMACIÓN
-  ============================================================ */
+  ========================================================== */
 
   function animate() {
 
@@ -1120,9 +1247,11 @@
 
 
     currentRotation +=
+
       (
         targetRotation -
         currentRotation
+
       ) * 0.08;
 
 
@@ -1142,9 +1271,9 @@
   }
 
 
-  /* ============================================================
-     INICIAR
-  ============================================================ */
+  /* ==========================================================
+     ARRANCAR
+  ========================================================== */
 
   init();
 
