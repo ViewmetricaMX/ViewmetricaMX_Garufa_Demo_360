@@ -133,9 +133,9 @@ button{ font-family: var(--font-body); }
 
     .viewmetrica-logo {
         width: 145px;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+    }
 }
+
 .header-inner{
   max-width: var(--max-w);
   margin: 0 auto;
