@@ -8,8 +8,8 @@
   --ink: #f2efe8;
   --ink-dim: #9ba09b;
   --ink-faint: #5c615d;
-  --accent: #3ee6c4;
-  --accent-dim: #1f7568;
+  --accent: #c9a24f;
+  --accent-dim: #8a6c2f;
   --line: rgba(242,239,232,0.09);
   --line-strong: rgba(242,239,232,0.18);
 
@@ -30,7 +30,7 @@ html{ scroll-behavior: smooth; }
 }
 body{
   margin:0;
-  background: var(--bg);
+  background: linear-gradient(180deg, #0a0a0a 0%, #120d0a 22%, #2a1a10 55%, #3d2416 78%, #4a2c19 100%);
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -112,11 +112,27 @@ button{ font-family: var(--font-body); }
 /* ==========================================================================
    Header
    ========================================================================== */
-.site-header{
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: rgba(10,11,12,0.82);
+.site-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 20px 24px;
+}
+
+.viewmetrica-logo {
+    display: block;
+    width: 180px;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        padding: 24px 20px 20px;
+    }
+
+    .viewmetrica-logo {
+        width: 145px;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -426,7 +442,7 @@ main > section{
 .pos-btn:last-child{ border-right: none; }
 .pos-btn-index{ color: var(--ink-faint); }
 .pos-btn:hover{ color: var(--ink); background: rgba(255,255,255,0.02); }
-.pos-btn.is-active{ color: var(--accent); background: rgba(62,230,196,0.06); }
+.pos-btn.is-active{ color: var(--accent); background: rgba(201,162,79,0.08); }
 .pos-btn.is-active .pos-btn-index{ color: var(--accent); }
 
 @media (max-width: 760px){
