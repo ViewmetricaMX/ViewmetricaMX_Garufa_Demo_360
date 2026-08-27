@@ -1,143 +1,158 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0"
   >
-
-  <title>Garufa Parrilla Argentina Torreón | Experiencia 360°</title>
 
   <meta
     name="description"
-    content="Descubre Garufa Parrilla Argentina en Torreón a través de una experiencia visual interactiva en 360°."
+    content="Descubre Garufa Parrilla Argentina en Torreón mediante una experiencia visual 360°."
   >
 
-  <meta name="theme-color" content="#171412">
+  <meta
+    name="theme-color"
+    content="#17130f"
+  >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>
+    Garufa Parrilla Argentina · Experiencia 360°
+  </title>
+
+
+  <!-- ==========================================================
+       TIPOGRAFÍA
+  =========================================================== -->
 
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;500&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css">
+
+  <!-- ==========================================================
+       THREE.JS
+       Compatible con el motor utilizado por Viewmetrica
+  =========================================================== -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+  ></script>
+
+
+  <!-- ==========================================================
+       CSS
+  =========================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
-  <!-- =========================================================
+
+  <!-- ==========================================================
        HEADER
-  ========================================================== -->
+  =========================================================== -->
 
   <header class="site-header">
 
-    <a href="#inicio" class="brand">
-      <img
-        src="assets/viewmetrica-logo.png"
-        alt="ViewMetricaMX"
-      >
-    </a>
+    <div class="brand">
 
-    <span class="header-label">
-      EXPERIENCIA VISUAL
-    </span>
+      <span class="brand-name">
+        GARUFA
+      </span>
+
+      <span class="brand-subtitle">
+        PARRILLA ARGENTINA
+      </span>
+
+    </div>
+
+
+    <div class="powered-by">
+
+      <span>
+        EXPERIENCIA 360°
+      </span>
+
+      <span class="powered-divider">
+        ·
+      </span>
+
+      <span>
+        VIEWMETRICA
+      </span>
+
+    </div>
 
   </header>
 
 
-  <main id="inicio">
+  <!-- ==========================================================
+       INTRO
+  =========================================================== -->
 
-    <!-- =======================================================
-         HERO
-    ======================================================== -->
-
-    <section class="hero">
-
-      <div class="hero-image">
-
-        <img
-          src="assets/restaurant_garufa_parrilla_argentina_torreon_entrada.jpg"
-          alt="Entrada de Garufa Parrilla Argentina en Torreón"
-        >
-
-        <div class="hero-overlay"></div>
-
-      </div>
+  <main>
 
 
-      <div class="hero-content">
+    <section class="intro-section">
+
+      <div class="intro-content">
 
         <p class="eyebrow">
-          GARUFA · PARRILLA ARGENTINA
+          TORREÓN · COAHUILA
         </p>
 
         <h1>
-          Antes de reservar,<br>
-          <em>conoce el lugar.</em>
+          Descubre<br>
+          <em>Garufa.</em>
         </h1>
 
-        <p class="hero-description">
-          Explora Garufa, descubre sus espacios y conoce
-          el ambiente antes de tu próxima visita.
+        <p class="intro-text">
+          Recorre sus espacios y descubre el ambiente
+          antes de tu visita.
         </p>
 
         <a
-          href="#explorar"
-          class="btn btn-light"
+          href="#experiencia"
+          class="intro-button"
         >
-          Explorar Garufa
-          <span>↓</span>
+          Comenzar recorrido
         </a>
 
       </div>
 
-      <div class="hero-location">
-        TORREÓN · COAHUILA
-      </div>
-
     </section>
 
 
-    <!-- =======================================================
-         INTRO
-    ======================================================== -->
-
-    <section class="intro">
-
-      <div class="intro-inner">
-
-        <p class="eyebrow dark">
-          UNA EXPERIENCIA DIFERENTE
-        </p>
-
-        <h2>
-          No solo veas el restaurante.<br>
-          <em>Recórrelo.</em>
-        </h2>
-
-        <p class="intro-copy">
-          Una experiencia visual interactiva permite que tus clientes
-          conozcan el ambiente, los espacios y los detalles del lugar
-          antes de llegar.
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <!-- =======================================================
-         EXPLORADOR
-    ======================================================== -->
+    <!-- ========================================================
+         EXPERIENCIA 360°
+    ========================================================= -->
 
     <section
-      class="explorer"
-      id="explorar"
+      class="experience-section"
+      id="experiencia"
     >
 
       <div class="section-heading">
@@ -145,462 +160,370 @@
         <div>
 
           <p class="eyebrow">
-            RECORRIDO VIRTUAL
+            EXPERIENCIA INTERACTIVA
           </p>
 
           <h2>
-            Explora los espacios
+            Recorre Garufa
           </h2>
 
         </div>
 
         <p class="section-description">
-          Selecciona un área para comenzar.
+          Explora cada espacio y observa el restaurante
+          desde diferentes puntos de vista.
         </p>
 
       </div>
 
 
-      <div class="viewer-wrapper">
+      <!-- ======================================================
+           VISOR
+      ======================================================= -->
+
+      <div
+        class="viewer"
+        id="viewer-stage"
+      >
+
+
+        <!-- ====================================================
+             CANVAS THREE.JS
+        ===================================================== -->
+
+        <canvas
+          id="pano-canvas"
+        ></canvas>
+
+
+        <!-- ====================================================
+             LOADING
+        ===================================================== -->
 
         <div
-          class="viewer"
-          id="viewer"
+          class="viewer-loading"
+          id="viewer-loading"
         >
 
-          <div
-            class="viewer-stage"
-            id="viewer-stage"
-          >
-
-            <canvas
-              id="pano-canvas"
-              aria-label="Vista interactiva de Garufa Parrilla Argentina"
-            ></canvas>
-
-
-            <div
-              class="viewer-loading"
-              id="viewer-loading"
-            >
-
-              <div class="loading-spinner"></div>
-
-              <span>
-                Preparando experiencia…
-              </span>
-
-            </div>
-
-
-            <div
-              class="viewer-hint"
-              id="viewer-hint"
-            >
-              <span class="hand-icon">↔</span>
-              <span>Arrastra para explorar</span>
-            </div>
-
-
-            <div
-              class="viewer-area"
-              id="viewer-area"
-            >
-              ENTRADA
-            </div>
-
-
-            <div
-              class="viewer-controls"
-            >
-
-              <button
-                type="button"
-                id="zoom-in"
-                aria-label="Acercar"
-              >
-                +
-              </button>
-
-              <button
-                type="button"
-                id="zoom-out"
-                aria-label="Alejar"
-              >
-                −
-              </button>
-
-              <button
-                type="button"
-                id="recenter"
-                aria-label="Centrar vista"
-              >
-                ◉
-              </button>
-
-              <button
-                type="button"
-                id="fullscreen-btn"
-                aria-label="Pantalla completa"
-              >
-                ⛶
-              </button>
-
-            </div>
-
+          <div class="loading-mark">
+            <span></span>
           </div>
 
-
-          <!-- Navegación de áreas -->
-
-          <nav
-            class="area-navigation"
-            aria-label="Áreas del restaurante"
-          >
-
-            <button
-              class="area-btn active"
-              data-area="entrada"
-            >
-
-              <span class="area-number">
-                01
-              </span>
-
-              <span>
-                Entrada
-              </span>
-
-            </button>
-
-
-            <button
-              class="area-btn"
-              data-area="salon"
-            >
-
-              <span class="area-number">
-                02
-              </span>
-
-              <span>
-                Salón
-              </span>
-
-            </button>
-
-
-            <button
-              class="area-btn"
-              data-area="barra"
-            >
-
-              <span class="area-number">
-                03
-              </span>
-
-              <span>
-                Barra
-              </span>
-
-            </button>
-
-
-            <button
-              class="area-btn"
-              data-area="terraza"
-            >
-
-              <span class="area-number">
-                04
-              </span>
-
-              <span>
-                Terraza
-              </span>
-
-            </button>
-
-          </nav>
+          <span>
+            Preparando panorama…
+          </span>
 
         </div>
 
+
+        <!-- ====================================================
+             AYUDA
+        ===================================================== -->
+
+        <div
+          class="viewer-hint"
+          id="viewer-hint"
+        >
+
+          <span class="hint-icon">
+            ↔
+          </span>
+
+          <span>
+            Arrastra para explorar
+          </span>
+
+        </div>
+
+
+        <!-- ====================================================
+             INFORMACIÓN DEL ÁREA
+        ===================================================== -->
+
+        <div class="viewer-info">
+
+          <span
+            class="viewer-area"
+            id="viewer-area"
+          >
+            ENTRADA
+          </span>
+
+        </div>
+
+
+        <!-- ====================================================
+             CONTROLES
+        ===================================================== -->
+
+        <div class="viewer-controls">
+
+          <button
+            type="button"
+            id="zoom-out"
+            aria-label="Alejar"
+            title="Alejar"
+          >
+            −
+          </button>
+
+          <button
+            type="button"
+            id="recenter"
+            aria-label="Centrar vista"
+            title="Centrar vista"
+          >
+            ○
+          </button>
+
+          <button
+            type="button"
+            id="zoom-in"
+            aria-label="Acercar"
+            title="Acercar"
+          >
+            +
+          </button>
+
+          <button
+            type="button"
+            id="fullscreen-btn"
+            aria-label="Pantalla completa"
+            title="Pantalla completa"
+          >
+            ⛶
+          </button>
+
+        </div>
+
+
+        <!--
+          El script genera automáticamente aquí:
+
+          CAVA       01 / 02
+          SALÓN      01 / 02
+          INTERIOR   01 / 02
+
+          cuando el área tiene múltiples panoramas.
+        -->
+
+
+        <div
+          id="panorama-navigation"
+          class="panorama-navigation"
+        ></div>
+
+
       </div>
+
+
+      <!-- ======================================================
+           NAVEGACIÓN POR ÁREAS
+      ======================================================= -->
+
+      <nav
+        class="areas-navigation"
+        aria-label="Áreas de Garufa"
+      >
+
+        <button
+          type="button"
+          class="area-btn active"
+          data-area="entrada"
+        >
+
+          <span class="area-number">
+            01
+          </span>
+
+          <span class="area-name">
+            Entrada
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="area-btn"
+          data-area="cava"
+        >
+
+          <span class="area-number">
+            02
+          </span>
+
+          <span class="area-name">
+            Cava
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="area-btn"
+          data-area="salon"
+        >
+
+          <span class="area-number">
+            03
+          </span>
+
+          <span class="area-name">
+            Salón principal
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="area-btn"
+          data-area="interior"
+        >
+
+          <span class="area-number">
+            04
+          </span>
+
+          <span class="area-name">
+            Interior
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="area-btn"
+          data-area="toilets"
+        >
+
+          <span class="area-number">
+            05
+          </span>
+
+          <span class="area-name">
+            Toilets
+          </span>
+
+        </button>
+
+      </nav>
 
     </section>
 
 
-    <!-- =======================================================
-         GALERÍA
-    ======================================================== -->
+    <!-- ========================================================
+         EXPERIENCIA
+    ========================================================= -->
 
-    <section class="gallery-section">
+    <section class="statement-section">
 
-      <div class="section-heading">
+      <div class="statement-inner">
 
-        <div>
-
-          <p class="eyebrow">
-            DETALLES
-          </p>
-
-          <h2>
-            El ambiente también cuenta.
-          </h2>
-
-        </div>
-
-      </div>
-
-
-      <div class="gallery">
-
-        <figure class="gallery-large">
-
-          <img
-            src="assets/restaurant_garufa_parrilla_argentina_torreon_salon.jpg"
-            alt="Salón de Garufa Parrilla Argentina Torreón"
-            loading="lazy"
-          >
-
-        </figure>
-
-
-        <figure>
-
-          <img
-            src="assets/restaurant_garufa_parrilla_argentina_torreon_barra.jpg"
-            alt="Barra de Garufa Parrilla Argentina Torreón"
-            loading="lazy"
-          >
-
-        </figure>
-
-
-        <figure>
-
-          <img
-            src="assets/restaurant_garufa_parrilla_argentina_torreon_terraza.jpg"
-            alt="Terraza de Garufa Parrilla Argentina Torreón"
-            loading="lazy"
-          >
-
-        </figure>
-
-      </div>
-
-    </section>
-
-
-    <!-- =======================================================
-         VALOR
-    ======================================================== -->
-
-    <section class="value-section">
-
-      <div class="value-inner">
-
-        <p class="eyebrow dark">
-          MÁS QUE FOTOGRAFÍAS
+        <p class="eyebrow">
+          EL ESPACIO TAMBIÉN CUENTA
         </p>
 
         <h2>
-          Una forma más cercana<br>
-          de conocer un lugar.
+          Antes de sentarte,<br>
+          <em>ya puedes estar ahí.</em>
         </h2>
 
-
-        <div class="value-grid">
-
-          <article>
-
-            <span>
-              01
-            </span>
-
-            <h3>
-              Primera impresión
-            </h3>
-
-            <p>
-              El cliente puede descubrir el ambiente
-              antes de tomar una decisión.
-            </p>
-
-          </article>
-
-
-          <article>
-
-            <span>
-              02
-            </span>
-
-            <h3>
-              Más confianza
-            </h3>
-
-            <p>
-              Mostrar el espacio reduce la incertidumbre
-              antes de una visita o reservación.
-            </p>
-
-          </article>
-
-
-          <article>
-
-            <span>
-              03
-            </span>
-
-            <h3>
-              Más presencia digital
-            </h3>
-
-            <p>
-              Una experiencia visual que puede integrarse
-              a web, campañas y canales digitales.
-            </p>
-
-          </article>
-
-        </div>
+        <p>
+          Una experiencia visual pensada para descubrir
+          el ambiente, los espacios y la personalidad
+          de Garufa.
+        </p>
 
       </div>
 
     </section>
 
 
-    <!-- =======================================================
+    <!-- ========================================================
          CTA
-    ======================================================== -->
+    ========================================================= -->
 
-    <section class="cta">
-
-      <div class="cta-background"></div>
+    <section class="cta-section">
 
       <div class="cta-content">
 
         <p class="eyebrow">
-          EXPERIENCIA VIEWMETRICAMX
+          VIEWMETRICA
         </p>
 
         <h2>
-          Tu espacio también<br>
-          puede contar una historia.
+          ¿Quieres que tus clientes<br>
+          conozcan tu espacio antes de visitarlo?
         </h2>
 
         <p>
-          Transformamos espacios físicos en experiencias
-          digitales que tus clientes pueden explorar.
+          Creamos experiencias visuales 360° para
+          restaurantes, hoteles, salones y espacios físicos.
         </p>
 
         <a
-          href="https://wa.me/528714005421"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-light"
+          href="#experiencia"
+          class="cta-button"
         >
-          Quiero una experiencia así
-          <span>→</span>
+          Conocer Viewmetrica
         </a>
 
       </div>
 
     </section>
 
+
   </main>
 
 
-  <!-- =========================================================
+  <!-- ==========================================================
        FOOTER
-  ========================================================== -->
+  =========================================================== -->
 
   <footer class="site-footer">
 
-    <div>
+    <div class="footer-brand">
 
       <strong>
-        VIEWMETRICAMX
+        VIEWMETRICA
       </strong>
 
       <span>
-        Reality Intelligence
+        Ingeniería de Visibilidad Local
       </span>
 
     </div>
 
-    <p>
-      Experiencias visuales · Fotografía 360° · Digitalización de espacios
-    </p>
+
+    <div class="footer-location">
+
+      Torreón · Coahuila · México
+
+    </div>
+
+
+    <div class="footer-copy">
+
+      © 2026 ViewmetricaMX
+
+    </div>
 
   </footer>
 
 
-  <!-- =========================================================
-       THREE.JS
-  ========================================================== -->
+  <!-- ==========================================================
+       JAVASCRIPT
+  =========================================================== -->
 
-  <script>
+  <script
+    src="script.js"
+  ></script>
 
-    (function loadThree(sources, index) {
-
-      index = index || 0;
-
-      if (index >= sources.length) {
-
-        console.error(
-          "No fue posible cargar Three.js."
-        );
-
-        return;
-
-      }
-
-      const script =
-        document.createElement("script");
-
-      script.src =
-        sources[index];
-
-      script.onload =
-        function () {
-
-          const app =
-            document.createElement("script");
-
-          app.src =
-            "script.js?v=" +
-            Date.now();
-
-          document.body.appendChild(app);
-
-        };
-
-      script.onerror =
-        function () {
-
-          loadThree(
-            sources,
-            index + 1
-          );
-
-        };
-
-      document.body.appendChild(script);
-
-    })([
-
-      "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-
-      "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js",
-
-      "https://unpkg.com/three@0.128.0/build/three.min.js"
-
-    ]);
-
-  </script>
 
 </body>
+
 </html>
