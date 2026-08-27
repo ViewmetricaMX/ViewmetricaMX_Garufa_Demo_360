@@ -14,11 +14,16 @@
 
 <!-- ============ HEADER ============ -->
 <header class="site-header">
-    <img
-        src="assets/viewmetrica-logo.png"
-        alt="ViewMetricaMX"
-        class="viewmetrica-logo"
-      
+  <div class="header-inner">
+    <span class="brand-mark">
+      <svg class="brand-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+        <path d="M12 3 V6 M12 18 V21 M3 12 H6 M18 12 H21" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      VIEWMETRICA<span class="brand-suffix">MX</span>
+    </span>
+    <span class="header-tag">DEMO CONCEPTUAL</span>
   </div>
 </header>
 
@@ -69,10 +74,19 @@
         </div>
 
         <!-- current area label + point indicator (dots, shown only when an area has >1 vista) -->
+        <!-- current area label + point counter (ej. "CAVA · 01/02") -->
         <div class="pos-tag" id="pos-tag">
           <span id="pos-tag-label">ENTRADA</span>
-          <span class="point-dots" id="point-dots" hidden></span>
+          <span class="point-dots" id="point-dots" hidden><span class="point-count" id="point-count">01/02</span></span>
         </div>
+
+        <!-- flechas para cambiar de vista dentro de la misma área (solo visibles si el área tiene más de una foto) -->
+        <button type="button" class="point-nav-btn point-nav-prev" id="point-prev" aria-label="Vista anterior de esta área" hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="point-nav-btn point-nav-next" id="point-next" aria-label="Vista siguiente de esta área" hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
 
         <!-- top-right controls: zoom / fullscreen / recenter -->
         <div class="viewer-controls" role="group" aria-label="Controles del visor">

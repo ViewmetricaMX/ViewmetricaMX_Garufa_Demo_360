@@ -88,6 +88,9 @@ const AUTOROTATE_RESUME_DELAY = 5200;
   const dragHint = document.getElementById("drag-hint");
   const posTagLabel = document.getElementById("pos-tag-label");
   const pointDotsEl = document.getElementById("point-dots");
+  const pointCountEl = document.getElementById("point-count");
+  const pointPrevBtn = document.getElementById("point-prev");
+  const pointNextBtn = document.getElementById("point-next");
 
   const areaButtons = Array.from(document.querySelectorAll(".pos-btn"));
 
@@ -216,27 +219,36 @@ const AUTOROTATE_RESUME_DELAY = 5200;
     const area = AREAS[currentAreaIndex];
     posTagLabel.textContent = area.label;
 
-    if (area.points.length <= 1) {
-      pointDotsEl.hidden = true;
-      pointDotsEl.innerHTML = "";
-      return;
-    }
+    const hasMultiple = area.points.length > 1;
 
-    pointDotsEl.hidden = false;
-    pointDotsEl.innerHTML = "";
-    area.points.forEach(function (pt, idx) {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "point-dot" + (idx === currentPointIndex ? " is-active" : "");
-      dot.setAttribute("aria-label", area.label + " — vista " + (idx + 1));
-      dot.addEventListener("click", function (e) {
-        e.stopPropagation();
-        markInteraction();
-        loadPoint(currentAreaIndex, idx);
-      });
-      pointDotsEl.appendChild(dot);
-    });
+    pointDotsEl.hidden = !hasMultiple;
+    pointPrevBtn.hidden = !hasMultiple;
+    pointNextBtn.hidden = !hasMultiple;
+
+    if (hasMultiple) {
+      const current = String(currentPointIndex + 1).padStart(2, "0");
+      const total = String(area.points.length).padStart(2, "0");
+      pointCountEl.textContent = current + "/" + total;
+    }
   }
+
+  function stepPoint(direction) {
+    const area = AREAS[currentAreaIndex];
+    if (area.points.length <= 1) return;
+    const nextIdx = (currentPointIndex + direction + area.points.length) % area.points.length;
+    loadPoint(currentAreaIndex, nextIdx);
+  }
+
+  pointPrevBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    markInteraction();
+    stepPoint(-1);
+  });
+  pointNextBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    markInteraction();
+    stepPoint(1);
+  });
 
   /* ==========================================================================
      CARGAR UN PUNTO (foto) DENTRO DE UN ÁREA

@@ -382,18 +382,49 @@ main > section{
   gap: 5px;
   padding-left: 8px;
   border-left: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
 }
-.point-dot{
-  width: 6px; height: 6px;
+.point-dots .point-count{
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Flechas grandes para cambiar de vista dentro de un área (ej. Cava 01/02) */
+.point-nav-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8,9,10,0.55);
+  border: 1px solid var(--line);
   border-radius: 50%;
-  border: none;
-  padding: 0;
-  background: var(--ink-faint);
+  color: var(--ink);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(6px);
+  z-index: 6;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
-.point-dot:hover{ background: var(--ink-dim); }
-.point-dot.is-active{ background: var(--accent); transform: scale(1.3); }
+.point-nav-btn:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(8,9,10,0.75);
+}
+.point-nav-btn:active{ transform: translateY(-50%) scale(0.92); }
+.point-nav-prev{ left: 18px; }
+.point-nav-next{ right: 18px; }
+.point-nav-btn[hidden]{ display: none; }
+
+@media (max-width: 640px){
+  .point-nav-btn{ width: 38px; height: 38px; }
+  .point-nav-prev{ left: 10px; }
+  .point-nav-next{ right: 10px; }
+}
 
 .viewer-controls{
   position: absolute;
